@@ -1,0 +1,7 @@
+:root {
+    --color-foreground: hsl(0, 0%, 100%);
+    --color-background: hsl(0, 0%, 15%);
+    --color-links: hsl(128, 80%, 50%);
+    --color-links-hover: hsl(128, 100%, 90%);
+    --color-border: hsl(0, 0%, 35%);
+}
