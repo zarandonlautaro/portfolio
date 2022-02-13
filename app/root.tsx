@@ -12,6 +12,7 @@ import type { LinksFunction } from "remix";
 
 import globalStylesUrl from "~/styles/global.css";
 import darkStylesUrl from "~/styles/dark.css";
+import { motion } from "framer-motion";
 
 // https://remix.run/api/app#links
 export let links: LinksFunction = () => {
@@ -31,7 +32,20 @@ export default function App() {
     return (
         <Document>
             <Layout>
-                <Outlet />
+                <motion.div
+                    initial="pageInitial"
+                    animate="pageAnimate"
+                    variants={{
+                        pageInitial: {
+                            opacity: 0,
+                        },
+                        pageAnimate: {
+                            opacity: 1,
+                        },
+                    }}
+                >
+                    <Outlet />
+                </motion.div>
             </Layout>
         </Document>
     );
@@ -150,15 +164,13 @@ function Layout({ children }: { children: React.ReactNode }) {
                     >
                         <ul>
                             <li>
-                                <Link to="/">Home</Link>
+                                <Link to="/">About</Link>
                             </li>
                             <li>
-                                <a href="https://remix.run/docs">Remix Docs</a>
+                                <Link to="/work">Work</Link>
                             </li>
                             <li>
-                                <a href="https://github.com/remix-run/remix">
-                                    GitHub
-                                </a>
+                                <Link to="/contact">Contact</Link>
                             </li>
                         </ul>
                     </nav>

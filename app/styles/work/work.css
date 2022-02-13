@@ -1,0 +1,13 @@
+:root {
+    --color-foreground: hsl(0, 0%, 100%);
+    --color-background: hsl(240, 7%, 6%);
+    --color-links: hsl(264, 100%, 79%);
+    --color-links-hover: hsl(264, 100%, 85%);
+    --color-border: rgba(255, 255, 255, 0.3);
+    --font-body: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        Liberation Mono, Courier New, monospace;
+}
+
+.about__intro {
+    max-width: 500px;
+}

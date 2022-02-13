@@ -1,11 +1,14 @@
 import type { MetaFunction, LoaderFunction } from "remix";
 import { useLoaderData, json, Link } from "remix";
-
+import { motion } from "framer-motion";
+import * as THREE from "three";
+import { useEffect, useRef, useState } from "react";
 type IndexData = {
     resources: Array<{ name: string; url: string }>;
     demos: Array<{ name: string; to: string }>;
     posts: Array<{ name: string; to: string }>;
 };
+import { Canvas, useFrame } from "@react-three/fiber";
 
 // Loaders provide data to components and are only ever called on the server, so
 // you can connect to a database or run any server side code you want right next
@@ -60,8 +63,8 @@ export let loader: LoaderFunction = () => {
 // https://remix.run/api/conventions#meta
 export let meta: MetaFunction = () => {
     return {
-        title: "Lautaro E. Zarandón",
-        description: "Web developer",
+        title: "Lautaro Zarandón",
+        description: "Front end developer",
     };
 };
 
@@ -69,16 +72,74 @@ export let meta: MetaFunction = () => {
 export default function Index() {
     let data = useLoaderData<IndexData>();
 
+    function Box(props: JSX.IntrinsicElements["mesh"]) {
+        const ref = useRef<THREE.Mesh>(null!);
+        const [hovered, hover] = useState(false);
+        const [clicked, click] = useState(false);
+        useFrame((state, delta) => (ref.current.rotation.x += 0.01));
+        return (
+            <mesh
+                {...props}
+                ref={ref}
+                scale={clicked ? 1.5 : 1}
+                onClick={(event) => click(!clicked)}
+                onPointerOver={(event) => hover(true)}
+                onPointerOut={(event) => hover(false)}
+            >
+                <boxGeometry args={[1, 1, 1]} />
+                <meshStandardMaterial color={hovered ? "hotpink" : "orange"} />
+            </mesh>
+        );
+    }
+
     return (
         <div className="remix__page">
             <main>
-                <h2>Hello visitor 🖖 </h2>
-                <p>I am a web developer from Argentina</p>
-                <small>
-                    I work with code to create fabulous websites and web
-                    applications.
-                </small>
+                <motion.div
+                    initial="hidden"
+                    animate="visible"
+                    variants={{
+                        hidden: {
+                            scale: 0.8,
+                            opacity: 0,
+                        },
+                        visible: {
+                            scale: 1,
+                            opacity: 1,
+                            transition: {
+                                delay: 0.4,
+                            },
+                        },
+                    }}
+                >
+                    <h1>Hi, I’m Lautaro. Nice to meet you.</h1>
+                    <p>Lautaro is a web developer based in Argentina</p>
+                </motion.div>
+                {/* <motion.li
+                    // key={id}
+                    className="card"
+                    whileHover={{
+                        position: "relative",
+                        zIndex: 1,
+                        background: "white",
+                        scale: [1, 1.4, 1.2],
+                        rotate: [0, 10, -10, 0],
+                        transition: {
+                            duration: 0.2,
+                        },
+                    }}
+                >
+                    Projects
+                </motion.li> */}
             </main>
+            <aside>
+                <Canvas>
+                    <ambientLight />
+                    <pointLight position={[10, 10, 10]} />
+                    <Box position={[-1.2, 0, 0]} />
+                    <Box position={[1.2, 0, 0]} />
+                </Canvas>
+            </aside>
             {/* <aside>
                 <h2>Making a blog</h2>
                 <ul>
